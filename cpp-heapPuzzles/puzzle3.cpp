@@ -15,6 +15,9 @@ int main() {
   p = new int;
   q = p;
   *q = 8;
+  cout << q << endl;
+  cout << *q << endl;
+  cout << p << endl;
   cout << *p << endl;
 
   q = new int;
