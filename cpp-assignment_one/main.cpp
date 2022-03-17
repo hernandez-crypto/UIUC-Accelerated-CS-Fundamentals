@@ -8,10 +8,15 @@
 **/
 
 // You need to include some header(s) here!
+#include <iostream>
 
+using namespace std;
 
 // You need to define your main() function here!
-
+int main() {
+cout << "Hello, world!\nGreetings from Illinois!\n";
+return 0;
+}
 
 // Notes:
 
