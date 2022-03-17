@@ -20,13 +20,13 @@ using std::endl;
 // }
 int main() {
   int x = 5;
-  int p = &x;
-  //p=6;
+  int *p = &x;
+  p=6;
+  //std::cout << "*p = " << *p << "\n" << "p = " << p << "\n";
+  int **q = &p;
+  int ***r = &q;
   std::cout << "*p = " << *p << "\n" << "p = " << p << "\n";
-  // int **q = &p;
-  // int ***r = &q;
-  // std::cout << "*p = " << *p << "\n" << "p = " << p << "\n";
-  //  std::cout << "*q = " << *q << "\n" << "q = " << q << "\n";
-  //   std::cout << "*r = " << *r << "\n" << "r = " << r << "\n";
+  std::cout << "*q = " << *q << "\n" << "q = " << q << "\n";
+  std::cout << "*r = " << *r << "\n" << "r = " << r << "\n";
 
 }
