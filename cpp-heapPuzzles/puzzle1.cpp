@@ -24,7 +24,8 @@ int main() {
   *p=6;
   int **q = &p;
   int ***r = &q;
-  std::cout << *p << '\n' << p;
-  std::cout << *q << '\n' << q;
-  std::cout << *r << '\n' << r;
+  std::cout << "*p = " << *p << "\n" << "p = " << p << "\n";
+   std::cout << "*q = " << *q << "\n" << "q = " << q << "\n";
+    std::cout << "*r = " << *r << "\n" << "r = " << r << "\n";
+
 }
