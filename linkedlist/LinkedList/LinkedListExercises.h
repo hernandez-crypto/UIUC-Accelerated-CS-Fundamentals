@@ -80,6 +80,23 @@
 
 template <typename T>
 void LinkedList<T>::insertOrdered(const T& newData) {
+  // create a new node with the data value set to newData
+  Node* newNode = new Node(newData);
+  // Node* prev = nullptr;
+  Node* cur = head_;
+
+  if(size_ == 0) {
+    head_ = newNode;
+    tail_ = newNode;
+    size_++;
+  } else {
+      while(cur->next && cur->next->data < newData)
+      {
+        cur = cur->next;
+      }
+    newNode->next = cur->next;
+    cur->next = newNode;
+  }
 
   // -----------------------------------------------------------
   // TODO: Your code here!
