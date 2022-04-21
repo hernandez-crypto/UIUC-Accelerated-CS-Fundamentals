@@ -81,22 +81,51 @@
 template <typename T>
 void LinkedList<T>::insertOrdered(const T& newData) {
   // create a new node with the data value set to newData
-  Node* newNode = new Node(newData);
-  // Node* prev = nullptr;
-  Node* cur = head_;
+  auto newNode = new Node(newData);
 
-  if(size_ == 0) {
+  // Empty list corner case
+  if(!head_) {
     head_ = newNode;
     tail_ = newNode;
-    size_++;
-  } else {
-      while(cur->next && cur->next->data < newData)
-      {
-        cur = cur->next;
-      }
-    newNode->next = cur->next;
-    cur->next = newNode;
+     ++size_;
+     return;
   }
+
+  auto curr = head_;
+  bool break_from_loop = false;
+
+  while(curr && !break_from_loop) {
+    if( newData < curr->data ) { // if the current node is greater in value than newData
+      auto prevNode = curr->prev;
+
+      if(!curr->prev) { // if we are at head and current datavalue is greater than newData
+        newNode->next = head_;
+        head_->prev = newNode;
+        head_ = newNode;
+        break_from_loop = true;
+      }
+      else {  // if we are not at head
+        prevNode->next = newNode;
+        newNode->prev = prevNode;
+        newNode->next = curr;
+        curr->prev = newNode;
+        break_from_loop = true;
+      }
+    }// end if newData < curr->data 
+    else {
+      if (!curr->next) { // if at the end of the loop and there are no nodes with values greater than newData
+        curr->next = newNode;
+        newNode->prev = curr;
+        tail_ = newNode;
+        break_from_loop = true;
+      }
+      else { // iterate over linkedlist if the current node is smaller than newData and if it's not the end of the list
+        curr = curr->next;
+      }
+    } // else newData > curr->data 
+  }// while
+
+  ++size_;
 
   // -----------------------------------------------------------
   // TODO: Your code here!
@@ -262,6 +291,73 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   //    very slow.
 
   // -----------------------------------------------------------
+
+   // Keep merging items until both LLs have been iterated through
+  while( !left.empty() || !right.empty() ){
+    // Corner case for one list empty while the other non-empty
+    if( !left.empty() && right.empty()) {
+      while( !left.empty() ) {
+        if( merged.empty() ) {
+          merged.pushBack(left.front());
+        }
+        else {
+          const auto last_merged_item = merged.back();
+          const auto item_to_merge = left.front();
+
+          if(last_merged_item <= item_to_merge) {
+            merged.pushBack(item_to_merge);
+          }
+          else {
+            merged.popBack();
+            merged.pushBack(item_to_merge);
+            merged.pushBack(last_merged_item);
+          }
+        }
+
+        left.popFront();
+      }// inner while
+    }// end if
+
+    // Corner case for one list empty while the other non-empty (reversed)
+    else if( left.empty() && !right.empty() ) {
+      while( !right.empty() ) {
+        if( merged.empty() ) {
+          merged.pushBack(right.front());
+        }
+        else {
+          const auto last_merged_item = merged.back();
+          const auto item_to_merge = right.front();
+
+          if(last_merged_item <= item_to_merge) {
+            merged.pushBack(item_to_merge);
+          }
+          else {
+            merged.popBack();
+            merged.pushBack(item_to_merge);
+            merged.pushBack(last_merged_item);
+          }
+        }
+
+        right.popFront();
+      }// inner while
+    }
+
+    // Both lists are not empty
+    else {
+      while( !right.empty() && !left.empty() ) {
+        
+        if(left.front() < right.front()) {
+          merged.pushBack(left.front());
+          left.popFront();
+        }
+        else {
+          merged.pushBack(right.front());
+          right.popFront();
+        }
+      }// inner while
+
+    }// end else
+  }// end while
 
   // We return the merged list by value here. It may be copied out of the
   // function, but usually the compiler will optimize this to automatically
