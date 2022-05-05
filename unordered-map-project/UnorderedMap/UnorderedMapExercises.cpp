@@ -53,9 +53,21 @@
 StringIntMap makeWordCounts(const StringVec& words) {
   StringIntMap wordcount_map;
 
-  // =================================================
-  // EXERCISE 1 WORKSPACE: YOUR CODE HERE
-  // =================================================
+  unsigned int n = 0;
+
+  // iterate through words vector and map strings onto wordcount_map
+  while(n != words.size())
+  // if words[n] is not defined for wordcount_map
+  {
+    if(!wordcount_map[words[n]]) {
+      // define it and set value to 0
+      wordcount_map[words[n]] = 1;
+    } else if (wordcount_map[words[n]]) {
+      // if words[n] is defined, iterate the value
+      wordcount_map[words[n]] += 1;
+    }
+    n++;
+  }
 
   return wordcount_map;
 }
