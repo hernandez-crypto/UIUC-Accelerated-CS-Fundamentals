@@ -54,8 +54,8 @@
   child that is 23. 16 has a single child that is 42.
 
   (Recall that for the sake of our terminal printing, "leftmost"
-   children are printed first, at the top, and "rightmost" children
-   are printed last, at the bottom.)
+  children are printed first, at the top, and "rightmost" children
+  are printed last, at the bottom.)
 
   You should try to build this tree as a GenericTree<int> in the
   treeFactory function. We'll help you get started below. You can study
@@ -86,6 +86,12 @@
 // properly destroyed first. There is no need to return a value because the
 // tree is edited in-place by reference.
 static void treeFactory(GenericTree<int>& tree) {
+    tree.getRootPtr()->data = 4;
+    tree.getRootPtr()->addChild(8);
+    tree.getRootPtr()->addChild(15);
+    tree.getRootPtr()->childrenPtrs[0]->addChild(16);
+    tree.getRootPtr()->childrenPtrs[0]->addChild(23);
+    tree.getRootPtr()->childrenPtrs[0]->childrenPtrs[0]->addChild(42);
 
   //      *****************************************************
   //                           EXERCISE 1
@@ -309,10 +315,29 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   // TreeNode* someTreeNodePointer = nullptr;
 
   // This is the results vector you need to fill.
-  std::vector<T> results;
+    std::vector <T> results;
 
-  auto rootNodePtr = tree.getRootPtr();
-  if (!rootNodePtr) return results;
+    auto rootNodePtr = tree.getRootPtr();
+    if (!rootNodePtr) return results;
+
+    std::queue <TreeNode*> levelNodes;
+    levelNodes.push(tree.getRootPtr());
+    results.push_back(tree.getRootPtr()->data);
+    int queueSize;
+    int vectorSize;
+    TreeNode *tmpNode;
+    while (!levelNodes.empty()) { // queue is not empty
+        queueSize = levelNodes.size();
+        for (int i = 0; i < queueSize; ++i) {
+            tmpNode = levelNodes.front(); // pop out this level treeNodes
+            levelNodes.pop();
+            vectorSize = tmpNode->childrenPtrs.size();
+            for (int j = 0; j < vectorSize; ++j) { // put all last level node's child to stack and queue for next level
+                results.push_back(tmpNode->childrenPtrs[j]->data); // put this node's child to result stack
+                levelNodes.push(tmpNode->childrenPtrs[j]);
+            }
+        }
+    }
 
   //      *****************************************************
   //                           EXERCISE 2
